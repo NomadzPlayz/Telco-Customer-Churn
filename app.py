@@ -169,9 +169,9 @@ monthly = form.number_input("MonthlyCharges", min_value=0.0, max_value=1000.0, v
 total = form.number_input("TotalCharges", min_value=0.0, max_value=100000.0, value=monthly*tenure)
 submitted = form.form_submit_button("Gunakan input manual")
 
-single_df = None
+# Persist manual single sample to session_state so it survives reruns (e.g. when clicking Predict)
 if submitted:
-    single_df = pd.DataFrame([{
+    sample = pd.DataFrame([{
         "gender": gender,
         "SeniorCitizen": senior,
         "Partner": partner,
@@ -181,7 +181,18 @@ if submitted:
         "MonthlyCharges": monthly,
         "TotalCharges": total
     }])
+    st.session_state["single_df"] = sample
     st.sidebar.success("Single sample siap diprediksi (periksa di main panel).")
+
+# If a batch file was uploaded, remove any previous single_df to avoid confusion
+if batch_df is not None and "single_df" in st.session_state:
+    try:
+        del st.session_state["single_df"]
+    except Exception:
+        pass
+
+# Read single_df from session_state (if exists)
+single_df = st.session_state.get("single_df", None)
 
 col1, col2 = st.columns([2,1])
 
@@ -271,3 +282,4 @@ st.write("""
   }, 'models/lgbm_churn.joblib')
 - Jika Anda ingin REST API, buat FastAPI terpisah yang memanggil fungsi validate_and_prepare_input().
 """)
+
