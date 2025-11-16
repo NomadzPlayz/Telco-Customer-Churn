@@ -1,0 +1,167 @@
+# Telco Customer Churn – Machine Learning Deployment (Streamlit + MLOps)
+
+Project ini mendemonstrasikan end-to-end pipeline **Machine Learning + MLOps** menggunakan dataset **Telco Customer Churn**.  
+Model dilatih untuk memprediksi apakah pelanggan kemungkinan akan **churn (berhenti berlangganan)** berdasarkan fitur-fitur demografis dan layanan.
+
+Aplikasi ini di-deploy secara **online** menggunakan **Streamlit Cloud**, sehingga dapat diakses publik melalui URL.
+
+---
+
+## 🚀 Features
+✔ Data preprocessing (cleaning, encoding, scaling)  
+✔ Model training menggunakan **LightGBM**  
+✔ Evaluasi performa (Accuracy, Precision, Recall, F1, ROC-AUC)  
+✔ Model artifact disimpan & di-load otomatis  
+✔ Web app menggunakan **Streamlit**  
+✔ Batch prediction (upload CSV)  
+✔ Single input form prediction  
+✔ SHAP feature importance (explainability)  
+✔ Public deployment (Streamlit Cloud)  
+✔ Repository GitHub sebagai source control
+
+---
+
+## 📂 Project Structure
+
+telco-churn-ml/
+│
+├── app.py # Streamlit app (deployment interface)
+├── requirements.txt # Semua dependency
+├── .gitignore
+│
+├── data/
+│ └── WA_Fn-UseC_-Telco-Customer-Churn.csv # (ignored in GitHub)
+│
+├── models/
+│ ├── lgbm_churn.joblib # Model ML yang sudah dilatih
+│ └── metrics.json # Metrik evaluasi model
+│
+├── src/
+│ ├── train.py # Script training utama
+│ ├── preprocess.py
+│ ├── model_lgb.py
+│ └── utils.py
+│
+└── README.md
+
+
+---
+
+## 📊 Dataset
+
+Dataset diambil dari **Kaggle**:
+
+**Telco Customer Churn**  
+🔗 https://www.kaggle.com/blastchar/telco-customer-churn
+
+Nama file yang digunakan:
+WA_Fn-UseC_-Telco-Customer-Churn.csv
+
+
+Simpan file ke folder:
+data/
+
+---
+
+## 🧹 Preprocessing Steps
+
+1. Menghapus kolom `customerID`
+2. Mengonversi `TotalCharges` (karena berisi whitespace)
+3. One-hot encoding categorical features
+4. Scaling numeric features (StandardScaler)
+5. Train–test split 80/20
+
+---
+
+## 🤖 Model
+
+Model menggunakan:
+- **LightGBM (Gradient Boosting)**  
+- Parameter default + early stopping  
+- Model disimpan sebagai artifact `.joblib`:
+models/lgbm_churn.joblib
+
+
+---
+
+## 📈 Evaluation Metrics
+
+Contoh metrik (akan berbeda sesuai hasil training Anda):
+Accuracy: 0.83
+Precision: 0.62
+Recall: 0.58
+F1-score: 0.60
+ROC-AUC: 0.89
+
+
+Detail lengkap tersimpan di:
+models/metrics.json
+
+
+---
+
+## 🏋️ Training Locally
+
+Aktifkan environment:
+
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# Mac/Linux: source .venv/bin/activate
+
+pip install -r requirements.txt
+
+Jalankan training:
+python src/train.py
+
+python src/train.py
+
+Ini akan menghasilkan:
+
+- models/lgbm_churn.joblib
+
+- models/metrics.json
+
+Run Streamlit Locally:
+streamlit run app.py
+
+Buka di browser:
+http://localhost:8501
+
+Deployment (Streamlit Cloud)
+
+1. Push semua source code ke GitHub
+
+2. Buka: https://share.streamlit.io
+
+3. Klik New App
+
+4. Pilih repo Anda
+
+5. Select:
+
+  - Branch: main
+
+  - File: app.py
+
+6. Klik Deploy
+
+Aplikasi akan muncul sebagai URL publik seperti:
+https://telco-churn-ml.streamlit.app/
+
+Requirements:
+streamlit
+pandas
+numpy
+scikit-learn
+lightgbm
+joblib
+matplotlib
+shap
+plotly
+
+Author
+
+Nama: Reihan Gyandra Noordiansyah
+Role: MLOps Engineer (Submission Project)
+Tujuan: Demonstrasi deployment Machine Learning model secara online.
